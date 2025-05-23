@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>📤 파일 및 폴더 업로드</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>📁 폴더 업로드:</p>
+    <input type="file" name="files" webkitdirectory directory multiple><br><br>
+
+    <p>📄 파일 업로드:</p>
+    <input type="file" name="files" multiple><br><br>
+
+    <label>커밋 메시지 (선택):</label><br>
+    <input type="text" name="message" placeholder="변경사항 설명"><br><br>
+
+    <input type="checkbox" name="git" id="git">
+    <label for="git">Git으로 버전 관리</label><br><br>
+
+    <button type="submit">업로드</button>
+</form>
+
+<hr>
+
+<h2>📁 일반 업로드 파일</h2>
+<ul>
+    {% for file in files %}
+        {% if not file.git_tracked %}
+        <li>
+            <a href="{{ file.file.url }}">{{ file.filepath }}</a>
+            ({{ file.uploaded_at|date:"Y-m-d H:i" }})
+
+            <!-- 미리보기 렌더링 -->
+            {% if ".png" in file.file.url or ".jpg" in file.file.url or ".jpeg" in file.file.url %}
+                <div><img src="{{ file.file.url }}" width="150"></div>
+            {% elif ".txt" in file.file.url or ".py" in file.file.url or ".md" in file.file.url %}
+                <details><summary>텍스트 미리보기</summary>
+                    <iframe src="{{ file.file.url }}" width="600" height="200"></iframe>
+                </details>
+            {% elif ".pdf" in file.file.url %}
+                <details><summary>PDF 미리보기</summary>
+                    <iframe src="{{ file.file.url }}" width="600" height="300"></iframe>
+                </details>
+            {% elif ".xlsx" in file.file.url or ".docx" in file.file.url or ".ppt" in file.file.url or ".pptx" in file.file.url %}
+                <details><summary>Office 문서 미리보기</summary>
+                    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src={{ request.build_absolute_uri|urlencode:file.file.url }}" width="700" height="400" frameborder="0"></iframe>
+                </details>
+            {% endif %}
+
+            <form action="{% url 'delete_file' file.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('정말 삭제할까요?');">삭제</button>
+            </form>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<h2>🧠 Git으로 관리되는 파일</h2>
+<ul>
+    {% for file in files %}
+        {% if file.git_tracked %}
+        <li>
+            <a href="{{ file.file.url }}">{{ file.filepath }}</a>
+            ({{ file.uploaded_at|date:"Y-m-d H:i" }})
+
+            <form action="{% url 'delete_file' file.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('정말 삭제할까요?');">삭제</button>
+            </form>
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<h3>📝 일반 파일 로그</h3>
+<ul>
+    {% for log in logs %}
+        <li>{{ log.timestamp|date:"Y-m-d H:i" }} - {{ log.action }} - {{ log.filename }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
