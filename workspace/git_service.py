@@ -39,7 +39,7 @@ def git_upload(f, filepath, filename, commit_msg, username):
     file_path = os.path.join(settings.MEDIA_ROOT, file_obj.file.name)
 
     try:
-        subprocess.run(['git', 'add', file_path], check=True, cwd=REPO_ROOT)
+        subprocess.run(['git', 'add', '-f', file_path], check=True, cwd=REPO_ROOT)
         subprocess.run(['git', 'commit', '-m', commit_msg], check=True, cwd=REPO_ROOT)
         subprocess.run(['git', 'push', 'origin', 'main'], check=True, cwd=REPO_ROOT)
 

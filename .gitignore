@@ -2,23 +2,24 @@
 __pycache__/
 *.py[cod]
 
-# SQLite DB
+# Django DB
 db.sqlite3
 
-# Media/uploads (업로드 파일)
+# 환경 변수
+.env
+
+# 미디어 파일
 media/
 uploads/
 
-# Byte-compiled and cache files
-*.log
-*.sqlite3
-
-# Django migrations
+# Django migrations (except __init__.py)
 */migrations/
 !*/migrations/__init__.py
 
-# 환경 파일
-.env
-
-# 기타 숨김 파일
+# OS/IDE 잡파일
 .DS_Store
+.idea/
+.vscode/
+
+# 로그
+*.log
