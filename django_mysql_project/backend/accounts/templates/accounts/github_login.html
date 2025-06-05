@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub 계정 연동</title>
+</head>
+<body>
+    <h1>🔗 GitHub 계정 연동</h1>
+    <p>GitHub 로그인 버튼을 클릭하여 연동을 시작하세요.</p>
+    <a href="{% url 'social:begin' 'github' %}?next=/accounts/github-success/">
+        <button style="padding:10px 20px; font-size:16px;">🔐 GitHub로 로그인</button>
+    </a>
+</body>
+</html>
