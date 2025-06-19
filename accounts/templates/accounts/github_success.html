@@ -1,0 +1,16 @@
+<!-- templates/accounts/github_success.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub 연동 완료</title>
+</head>
+<body>
+    <h1>✅ GitHub 연동이 성공적으로 완료되었습니다!</h1>
+    <p>이제 GitHub 계정을 통해 연동된 서비스를 사용할 수 있습니다.</p>
+
+    <a href="{% url 'upload_and_list' %}">
+        <button style="padding:10px 20px; font-size:16px;">파일 관리 화면으로 이동</button>
+    </a>
+</body>
+</html>
